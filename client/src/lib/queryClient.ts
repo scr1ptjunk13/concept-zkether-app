@@ -1,50 +1,39 @@
-import { QueryClient, QueryFunction } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 
-async function throwIfResNotOk(res: Response) {
-  if (!res.ok) {
-    const text = (await res.text()) || res.statusText;
-    throw new Error(`${res.status}: ${text}`);
-  }
-}
-
-export async function apiRequest(
-  method: string,
-  url: string,
-  data?: unknown | undefined,
-): Promise<Response> {
-  const res = await fetch(url, {
-    method,
-    headers: data ? { "Content-Type": "application/json" } : {},
-    body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
-  });
-
-  await throwIfResNotOk(res);
-  return res;
-}
-
-type UnauthorizedBehavior = "returnNull" | "throw";
-export const getQueryFn: <T>(options: {
-  on401: UnauthorizedBehavior;
-}) => QueryFunction<T> =
-  ({ on401: unauthorizedBehavior }) =>
-  async ({ queryKey }) => {
-    const res = await fetch(queryKey.join("/") as string, {
-      credentials: "include",
-    });
-
-    if (unauthorizedBehavior === "returnNull" && res.status === 401) {
-      return null;
-    }
-
-    await throwIfResNotOk(res);
-    return await res.json();
-  };
+// Mock data for static frontend
+export const mockData = {
+  balance: { balance: 2.5 },
+  privacyMetrics: {
+    id: "1",
+    anonymitySetSize: 47,
+    unlinkabilityScore: 97.8,
+    updatedAt: new Date(),
+  },
+  activity: [
+    {
+      id: "1",
+      type: "deposit",
+      status: "committed",
+      timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 mins ago
+    },
+    {
+      id: "2", 
+      type: "withdrawal",
+      status: "completed",
+      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
+    },
+    {
+      id: "3",
+      type: "deposit", 
+      status: "committed",
+      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24), // 1 day ago
+    },
+  ],
+};
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      queryFn: getQueryFn({ on401: "throw" }),
       refetchInterval: false,
       refetchOnWindowFocus: false,
       staleTime: Infinity,

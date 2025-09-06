@@ -1,11 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
+import { mockData } from "@/lib/queryClient";
 
 export default function ActivityFeed() {
-  const { data: activity = [] } = useQuery({
-    queryKey: ["/api/activity"],
-    refetchInterval: 30000,
-  });
+  const activity = mockData.activity;
 
   const getActivityIcon = (type: string, status: string) => {
     if (type === "deposit") {

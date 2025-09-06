@@ -1,0 +1,772 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zkETHer - Private Ethereum Transactions</title>
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiemtFVEhlciIsInNob3J0X25hbWUiOiJ6a0VUSGVyIiwiZGVzY3JpcHRpb24iOiJQcml2YXRlIEV0aGVyZXVtIFRyYW5zYWN0aW9ucyIsInN0YXJ0X3VybCI6Ii8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjMDAwMDAwIiwidGhlbWVfY29sb3IiOiIjMDAwMDAwIiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjNhV1IwYUQwaU1USTRJaUJvWldsbmFIUTlJakV5T0NJZ2RtbGxkMEp2ZUQwaU1DQXdJREV5T0NBeU9DSTZJRzVoYldVOUluTjJaejRnUEhKbFkzUWdkMmxrZEdnOUlqRXlPQ0lnYUdWcFoyaDBQU0l4TWpnaUlHWnBiR3c5SWlNd01EQXdNREFpTHo0Z1BHTnBjbU5zWlNCamVEMGlOalFpSUdONVBTSTJOQ0lnY2owc01qa2lJR1pwYkd3OUlpTkdSa1pHUmtZaUx6NG1FRHH2Oa0lzOlNXSnBabHI5SWpNeUlpQjNhV1IwYUQwaU16SWlJR2hsYVdkb2REMGlNekelkU2c3R5V6Uk1sZllpODJPQSJ9XX0=">
+    <meta name="theme-color" content="#000000">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                borderRadius: {
+                    lg: "var(--radius)",
+                    md: "calc(var(--radius) - 2px)",
+                    sm: "calc(var(--radius) - 4px)",
+                },
+                colors: {
+                    background: "var(--background)",
+                    foreground: "var(--foreground)",
+                    card: {
+                        DEFAULT: "var(--card)",
+                        foreground: "var(--card-foreground)",
+                    },
+                    primary: {
+                        DEFAULT: "var(--primary)",
+                        foreground: "var(--primary-foreground)",
+                    },
+                    secondary: {
+                        DEFAULT: "var(--secondary)",
+                        foreground: "var(--secondary-foreground)",
+                    },
+                    muted: {
+                        DEFAULT: "var(--muted)",
+                        foreground: "var(--muted-foreground)",
+                    },
+                    accent: {
+                        DEFAULT: "var(--accent)",
+                        foreground: "var(--accent-foreground)",
+                    },
+                    border: "var(--border)",
+                    ring: "var(--ring)",
+                },
+                fontFamily: {
+                    mono: ["JetBrains Mono", "monospace"],
+                    sans: ["Inter", "sans-serif"],
+                }
+            },
+        }
+    };
+    </script>
+    
+    <style>
+        :root {
+            --background: hsl(0 0% 0%);
+            --foreground: hsl(0 0% 100%);
+            --card: hsl(0 0% 5%);
+            --card-foreground: hsl(0 0% 100%);
+            --primary: hsl(0 0% 100%);
+            --primary-foreground: hsl(0 0% 0%);
+            --secondary: hsl(0 0% 15%);
+            --secondary-foreground: hsl(0 0% 90%);
+            --muted: hsl(0 0% 25%);
+            --muted-foreground: hsl(0 0% 60%);
+            --accent: hsl(142 82% 58%);
+            --accent-foreground: hsl(0 0% 0%);
+            --border: hsl(0 0% 20%);
+            --ring: hsl(0 0% 30%);
+            --radius: 0.75rem;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--foreground);
+            overflow-x: hidden;
+        }
+        
+        .dot-matrix {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .breathing-dots {
+            animation: breathe 3s ease-in-out infinite;
+        }
+        
+        @keyframes breathe {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
+        }
+        
+        .progress-dots {
+            animation: progressFill 2s ease-in-out infinite;
+        }
+        
+        @keyframes progressFill {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+        
+        .pulse-dot {
+            animation: pulseDot 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes pulseDot {
+            0%, 100% { opacity: 0.4; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.5s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .dot-grid {
+            background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+        
+        .status-bar {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="bg-background text-foreground min-h-screen">
+    <!-- Status Bar -->
+    <div class="status-bar flex justify-between items-center px-4 py-2 text-xs font-mono">
+        <div class="flex items-center space-x-2">
+            <span>11:46</span>
+            <div class="w-4 h-2 border border-white/30 rounded-sm">
+                <div class="w-3/4 h-full bg-white rounded-sm"></div>
+            </div>
+        </div>
+        <div class="flex items-center space-x-1">
+            <span class="text-xs">5G</span>
+            <div class="flex space-x-px">
+                <div class="w-1 h-2 bg-white"></div>
+                <div class="w-1 h-3 bg-white"></div>
+                <div class="w-1 h-4 bg-white"></div>
+                <div class="w-1 h-3 bg-white/50"></div>
+            </div>
+            <div class="w-4 h-2 border border-white/30 rounded-sm">
+                <div class="w-2/3 h-full bg-white rounded-sm"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="max-w-md mx-auto min-h-screen bg-background">
+        <!-- Header with App Title -->
+        <header class="px-6 py-6 text-center">
+            <div class="flex items-center justify-center space-x-2 breathing-dots">
+                <div class="flex space-x-1">
+                    <div class="w-2 h-2 bg-white rounded-full pulse-dot" style="animation-delay: 0s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full pulse-dot" style="animation-delay: 0.2s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full pulse-dot" style="animation-delay: 0.4s"></div>
+                </div>
+                <h1 class="text-2xl font-mono font-bold tracking-wider">zkETHer</h1>
+                <div class="flex space-x-1">
+                    <div class="w-2 h-2 bg-white rounded-full pulse-dot" style="animation-delay: 0.6s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full pulse-dot" style="animation-delay: 0.8s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full pulse-dot" style="animation-delay: 1s"></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Balance Card -->
+        <div class="px-6 mb-6">
+            <div class="bg-card border border-border rounded-lg p-6 glow-effect fade-in">
+                <!-- Balance Dot Matrix Visualization -->
+                <div class="text-center mb-4">
+                    <div class="grid grid-cols-20 gap-1 max-w-xs mx-auto mb-4 breathing-dots">
+                        <!-- Top row of dots representing balance -->
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                        <div class="w-2 h-2 bg-white rounded-full" data-mock="true"></div>
+                    </div>
+                    <div class="text-3xl font-mono font-bold mb-2" data-bind="user.balance">2.47 ETH</div>
+                    <div class="text-sm text-muted-foreground font-mono">UNLINKABLE</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Privacy Status -->
+        <div class="px-6 mb-6">
+            <div class="bg-card border border-border rounded-lg p-4 fade-in">
+                <div class="text-sm text-muted-foreground mb-2">Anonymity Set: <span class="text-accent font-mono" data-bind="privacy.anonymitySet">23 users</span></div>
+                
+                <!-- Privacy Indicator Dots -->
+                <div class="flex space-x-1 mb-3">
+                    <!-- Filled dots representing current privacy level -->
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.1s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.2s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.3s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.4s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.5s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.6s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.7s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.8s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.9s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 1s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 1.1s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 1.2s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 1.3s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 1.4s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 1.5s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 1.6s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 1.7s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 1.8s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 1.9s"></div>
+                    <!-- Empty dots for remaining privacy -->
+                    <div class="w-2 h-2 border border-white/30 rounded-full"></div>
+                    <div class="w-2 h-2 border border-white/30 rounded-full"></div>
+                    <div class="w-2 h-2 border border-white/30 rounded-full"></div>
+                    <div class="w-2 h-2 border border-white/30 rounded-full"></div>
+                    <div class="w-2 h-2 border border-white/30 rounded-full"></div>
+                    <div class="w-2 h-2 border border-white/30 rounded-full"></div>
+                    <div class="w-2 h-2 border border-white/30 rounded-full"></div>
+                    <div class="w-2 h-2 border border-white/30 rounded-full"></div>
+                    <div class="w-2 h-2 border border-white/30 rounded-full"></div>
+                    <div class="w-2 h-2 border border-white/30 rounded-full"></div>
+                </div>
+                
+                <div class="text-xs text-muted-foreground mb-2">Your withdrawals are unlinkable</div>
+                
+                <div class="flex justify-between text-xs font-mono">
+                    <span>Privacy Level: <span class="text-accent">Medium (4.3%)</span></span>
+                    <span>Unlinkability: <span class="text-accent">95.7%</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="px-6 mb-6">
+            <div class="grid grid-cols-2 gap-4">
+                <!-- @COMPONENT: DepositButton -->
+                <button 
+                    class="bg-card border border-border rounded-lg p-4 text-center hover:bg-secondary transition-colors duration-200 fade-in"
+                    data-event="click:openDepositFlow"
+                    onclick="showDepositFlow()"
+                >
+                    <div class="w-3 h-3 bg-white rounded-full mx-auto mb-2 pulse-dot"></div>
+                    <div class="font-mono font-medium">DEPOSIT</div>
+                    <div class="text-xs text-muted-foreground">(Public)</div>
+                </button>
+                <!-- @END_COMPONENT: DepositButton -->
+                
+                <!-- @COMPONENT: WithdrawButton -->
+                <button 
+                    class="bg-card border border-border rounded-lg p-4 text-center hover:bg-secondary transition-colors duration-200 fade-in"
+                    data-event="click:openWithdrawFlow"
+                    onclick="showWithdrawFlow()"
+                >
+                    <div class="w-3 h-3 bg-white rounded-full mx-auto mb-2 pulse-dot"></div>
+                    <div class="font-mono font-medium">WITHDRAW</div>
+                    <div class="text-xs text-muted-foreground">(Anonymous)</div>
+                </button>
+                <!-- @END_COMPONENT: WithdrawButton -->
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="px-6 mb-6">
+            <div class="bg-card border border-border rounded-lg p-4 fade-in">
+                <h3 class="font-mono font-medium mb-3">Recent Activity</h3>
+                
+                <!-- @MAP: activities.map(activity => ( -->
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-3 text-sm" data-mock="true">
+                        <div class="w-2 h-2 bg-accent rounded-full pulse-dot"></div>
+                        <span class="text-muted-foreground">Deposit completed 2h ago</span>
+                    </div>
+                    <div class="flex items-center space-x-3 text-sm" data-mock="true">
+                        <div class="w-2 h-2 bg-white rounded-full pulse-dot"></div>
+                        <span class="text-muted-foreground">Note discovered 5h ago</span>
+                    </div>
+                    <div class="flex items-center space-x-3 text-sm" data-mock="true">
+                        <div class="w-2 h-2 bg-yellow-500 rounded-full pulse-dot"></div>
+                        <span class="text-muted-foreground">Withdrawal pending...</span>
+                    </div>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Deposit Flow Modal -->
+    <div id="depositModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-card border border-border rounded-lg max-w-md w-full slide-up">
+                <!-- Header -->
+                <div class="flex items-center justify-between p-4 border-b border-border">
+                    <h2 class="font-mono font-medium">Send ETH Privately</h2>
+                    <button onclick="closeDepositFlow()" class="text-muted-foreground hover:text-foreground">
+                        <div class="w-6 h-6 flex items-center justify-center">×</div>
+                    </button>
+                </div>
+                
+                <!-- Deposit Form -->
+                <div class="p-4 space-y-4">
+                    <div>
+                        <label class="block text-sm text-muted-foreground mb-2">To: Bob's zkETHer Key</label>
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                placeholder="0x1a2b3c4d..." 
+                                class="w-full bg-secondary border border-border rounded-md px-3 py-2 font-mono text-sm"
+                                data-implementation="Should validate zkETHer public key format"
+                            >
+                            <!-- Animated dots while typing -->
+                            <div class="absolute right-3 top-1/2 transform -translate-y-1/2 flex space-x-1">
+                                <div class="w-1 h-1 bg-white/50 rounded-full progress-dots"></div>
+                                <div class="w-1 h-1 bg-white/50 rounded-full progress-dots" style="animation-delay: 0.2s"></div>
+                                <div class="w-1 h-1 bg-white/50 rounded-full progress-dots" style="animation-delay: 0.4s"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-muted-foreground mb-2">Amount: 1.00 ETH (Fixed)</label>
+                        <div class="bg-secondary border border-border rounded-md px-3 py-2">
+                            <div class="flex space-x-1 items-center">
+                                <div class="font-mono">1.00 ETH</div>
+                                <div class="flex space-x-1 ml-2">
+                                    <!-- Fixed denomination visualization -->
+                                    <div class="w-1 h-1 bg-white rounded-full breathing-dots"></div>
+                                    <div class="w-1 h-1 bg-white rounded-full breathing-dots" style="animation-delay: 0.1s"></div>
+                                    <div class="w-1 h-1 bg-white rounded-full breathing-dots" style="animation-delay: 0.2s"></div>
+                                    <div class="w-1 h-1 bg-white rounded-full breathing-dots" style="animation-delay: 0.3s"></div>
+                                    <div class="w-1 h-1 bg-white rounded-full breathing-dots" style="animation-delay: 0.4s"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <button class="flex-1 bg-secondary border border-border rounded-md py-2 text-sm font-mono hover:bg-muted transition-colors">
+                            QR SCAN
+                        </button>
+                        <button class="flex-1 bg-secondary border border-border rounded-md py-2 text-sm font-mono hover:bg-muted transition-colors">
+                            CONTACTS
+                        </button>
+                    </div>
+                    
+                    <button 
+                        onclick="startDepositProcess()"
+                        class="w-full bg-primary text-primary-foreground rounded-md py-3 font-mono font-medium hover:bg-primary/90 transition-colors"
+                        data-implementation="Should validate form and start commitment generation"
+                    >
+                        <div class="flex items-center justify-center space-x-2">
+                            <div class="w-2 h-2 bg-current rounded-full pulse-dot"></div>
+                            <span>CONTINUE</span>
+                            <div class="w-2 h-2 bg-current rounded-full pulse-dot"></div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deposit Process Modal -->
+    <div id="depositProcessModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-card border border-border rounded-lg max-w-md w-full slide-up">
+                <!-- @STATE: currentStep:string = 'commitment' -->
+                
+                <!-- Step 1: Commitment Generation -->
+                <div id="commitmentStep" class="p-6 text-center">
+                    <h3 class="font-mono font-medium mb-4">Generating Commitment...</h3>
+                    
+                    <!-- Progress bar with dots -->
+                    <div class="flex space-x-1 mb-4 justify-center">
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots"></div>
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.1s"></div>
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.2s"></div>
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.3s"></div>
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.4s"></div>
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.5s"></div>
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.6s"></div>
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.7s"></div>
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.8s"></div>
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.9s"></div>
+                    </div>
+                    <div class="text-sm text-muted-foreground mb-4">Poseidon Hash: <span id="hashProgress" class="text-accent font-mono">67%</span></div>
+                    
+                    <!-- Hash computation visualization -->
+                    <div class="bg-secondary border border-border rounded-md p-4 mb-4">
+                        <div class="grid grid-cols-5 gap-2">
+                            <div class="w-3 h-3 bg-white rounded-full pulse-dot" style="animation-delay: 0s"></div>
+                            <div class="w-3 h-3 bg-white rounded-full pulse-dot" style="animation-delay: 0.2s"></div>
+                            <div class="w-3 h-3 bg-white rounded-full pulse-dot" style="animation-delay: 0.4s"></div>
+                            <div class="w-3 h-3 bg-white rounded-full pulse-dot" style="animation-delay: 0.6s"></div>
+                            <div class="w-3 h-3 bg-white rounded-full pulse-dot" style="animation-delay: 0.8s"></div>
+                            <div class="w-3 h-3 bg-white/50 rounded-full pulse-dot" style="animation-delay: 1s"></div>
+                            <div class="w-3 h-3 bg-white/50 rounded-full pulse-dot" style="animation-delay: 1.2s"></div>
+                            <div class="w-3 h-3 bg-white/50 rounded-full pulse-dot" style="animation-delay: 1.4s"></div>
+                            <div class="w-3 h-3 bg-white/50 rounded-full pulse-dot" style="animation-delay: 1.6s"></div>
+                            <div class="w-3 h-3 bg-white/50 rounded-full pulse-dot" style="animation-delay: 1.8s"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-sm text-muted-foreground mb-2">Creating note for Bob...</div>
+                    <div class="text-xs font-mono text-muted-foreground mb-4">Nonce: 0xabc123... <span class="inline-flex space-x-px ml-2">
+                        <div class="w-1 h-1 bg-white rounded-full progress-dots"></div>
+                        <div class="w-1 h-1 bg-white rounded-full progress-dots" style="animation-delay: 0.1s"></div>
+                        <div class="w-1 h-1 bg-white rounded-full progress-dots" style="animation-delay: 0.2s"></div>
+                    </span></div>
+                    
+                    <div class="text-sm text-accent font-mono">Time remaining: ~3 seconds</div>
+                </div>
+                
+                <!-- Step 2: Blockchain Submission -->
+                <div id="blockchainStep" class="p-6 text-center hidden">
+                    <h3 class="font-mono font-medium mb-4">Broadcasting Transaction...</h3>
+                    
+                    <div class="flex space-x-1 mb-4 justify-center">
+                        <div class="w-2 h-2 bg-accent rounded-full progress-dots"></div>
+                        <div class="w-2 h-2 bg-accent rounded-full progress-dots" style="animation-delay: 0.1s"></div>
+                        <div class="w-2 h-2 bg-accent rounded-full progress-dots" style="animation-delay: 0.2s"></div>
+                        <div class="w-2 h-2 bg-accent rounded-full progress-dots" style="animation-delay: 0.3s"></div>
+                        <div class="w-2 h-2 bg-accent rounded-full progress-dots" style="animation-delay: 0.4s"></div>
+                        <div class="w-2 h-2 bg-accent rounded-full progress-dots" style="animation-delay: 0.5s"></div>
+                        <div class="w-2 h-2 bg-accent rounded-full progress-dots" style="animation-delay: 0.6s"></div>
+                        <div class="w-2 h-2 bg-accent rounded-full progress-dots" style="animation-delay: 0.7s"></div>
+                        <div class="w-2 h-2 bg-accent rounded-full progress-dots" style="animation-delay: 0.8s"></div>
+                        <div class="w-2 h-2 bg-accent rounded-full progress-dots" style="animation-delay: 0.9s"></div>
+                    </div>
+                    <div class="text-sm text-muted-foreground mb-4">Ethereum Network: Confirming</div>
+                    
+                    <!-- Network propagation visualization -->
+                    <div class="bg-secondary border border-border rounded-md p-4 mb-4 relative">
+                        <div class="grid grid-cols-7 gap-2 items-center justify-center">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div class="w-3 h-3 bg-accent rounded-full pulse-dot"></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div class="w-3 h-3 bg-white/70 rounded-full pulse-dot" style="animation-delay: 0.5s"></div>
+                            <div class="w-3 h-3 bg-white/70 rounded-full pulse-dot" style="animation-delay: 0.3s"></div>
+                            <div class="w-3 h-3 bg-white/70 rounded-full pulse-dot" style="animation-delay: 0.7s"></div>
+                            <div class="w-3 h-3 bg-white/70 rounded-full pulse-dot" style="animation-delay: 0.4s"></div>
+                            <div></div>
+                            <div></div>
+                            <div class="w-3 h-3 bg-white/50 rounded-full pulse-dot" style="animation-delay: 1s"></div>
+                            <div class="w-3 h-3 bg-white/50 rounded-full pulse-dot" style="animation-delay: 0.8s"></div>
+                            <div class="w-3 h-3 bg-white/50 rounded-full pulse-dot" style="animation-delay: 1.2s"></div>
+                            <div class="w-3 h-3 bg-white/50 rounded-full pulse-dot" style="animation-delay: 0.9s"></div>
+                            <div class="w-3 h-3 bg-white/50 rounded-full pulse-dot" style="animation-delay: 1.1s"></div>
+                            <div></div>
+                            <div></div>
+                            <div class="w-3 h-3 bg-white/30 rounded-full pulse-dot" style="animation-delay: 1.5s"></div>
+                            <div class="w-3 h-3 bg-white/30 rounded-full pulse-dot" style="animation-delay: 1.3s"></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-sm text-muted-foreground mb-2">Gas: 21,000 gwei</div>
+                    <div class="text-sm text-muted-foreground mb-4">Block: #18,500,042</div>
+                    
+                    <button class="bg-secondary border border-border rounded-md px-4 py-2 text-xs font-mono hover:bg-muted transition-colors">
+                        VIEW ON ETHERSCAN
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Withdraw Flow Modal -->
+    <div id="withdrawModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-card border border-border rounded-lg max-w-md w-full slide-up">
+                <!-- @STATE: withdrawStep:string = 'scanning' -->
+                
+                <!-- Step 1: Note Discovery -->
+                <div id="scanningStep" class="p-6 text-center">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-mono font-medium">Scanning for Notes...</h3>
+                        <button onclick="closeWithdrawFlow()" class="text-muted-foreground hover:text-foreground">
+                            <div class="w-6 h-6 flex items-center justify-center">×</div>
+                        </button>
+                    </div>
+                    
+                    <div class="flex space-x-1 mb-4 justify-center">
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots"></div>
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.1s"></div>
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.2s"></div>
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.3s"></div>
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.4s"></div>
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.5s"></div>
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.6s"></div>
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.7s"></div>
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.8s"></div>
+                        <div class="w-2 h-2 bg-white rounded-full progress-dots" style="animation-delay: 0.9s"></div>
+                    </div>
+                    <div class="text-sm text-muted-foreground mb-4">Checking 1,247 deposits</div>
+                    
+                    <!-- Trial decryption visualization -->
+                    <div class="bg-secondary border border-border rounded-md p-4 mb-4">
+                        <div class="grid grid-cols-7 gap-2">
+                            <div class="flex flex-col items-center space-y-1">
+                                <div class="w-2 h-2 bg-white rounded-full pulse-dot"></div>
+                                <div class="text-xs text-red-400">✗</div>
+                            </div>
+                            <div class="flex flex-col items-center space-y-1">
+                                <div class="w-2 h-2 bg-white rounded-full pulse-dot" style="animation-delay: 0.2s"></div>
+                                <div class="text-xs text-red-400">✗</div>
+                            </div>
+                            <div class="flex flex-col items-center space-y-1">
+                                <div class="w-2 h-2 bg-accent rounded-full pulse-dot" style="animation-delay: 0.4s"></div>
+                                <div class="text-xs text-accent">✓</div>
+                            </div>
+                            <div class="flex flex-col items-center space-y-1">
+                                <div class="w-2 h-2 bg-white rounded-full pulse-dot" style="animation-delay: 0.6s"></div>
+                                <div class="text-xs text-red-400">✗</div>
+                            </div>
+                            <div class="flex flex-col items-center space-y-1">
+                                <div class="w-2 h-2 bg-white rounded-full pulse-dot" style="animation-delay: 0.8s"></div>
+                                <div class="text-xs text-red-400">✗</div>
+                            </div>
+                            <div class="flex flex-col items-center space-y-1">
+                                <div class="w-2 h-2 bg-white rounded-full pulse-dot" style="animation-delay: 1s"></div>
+                                <div class="text-xs text-red-400">✗</div>
+                            </div>
+                            <div class="flex flex-col items-center space-y-1">
+                                <div class="w-2 h-2 bg-white rounded-full pulse-dot" style="animation-delay: 1.2s"></div>
+                                <div class="text-xs text-red-400">✗</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-sm text-accent mb-2">Found: 1 note (1.00 ETH)</div>
+                    <div class="text-xs text-muted-foreground mb-4">Position: #42 in tree</div>
+                    
+                    <div class="text-sm text-accent font-mono">Time: ~2 seconds</div>
+                    
+                    <button 
+                        onclick="startZKProof()"
+                        class="w-full bg-primary text-primary-foreground rounded-md py-3 font-mono font-medium hover:bg-primary/90 transition-colors mt-4"
+                    >
+                        GENERATE ZK PROOF
+                    </button>
+                </div>
+                
+                <!-- Step 2: ZK Proof Generation -->
+                <div id="zkProofStep" class="p-6 text-center hidden">
+                    <h3 class="font-mono font-medium mb-4">Generating Zero-Knowledge Proof</h3>
+                    
+                    <div class="flex space-x-1 mb-4 justify-center">
+                        <div class="w-2 h-2 bg-accent rounded-full progress-dots"></div>
+                        <div class="w-2 h-2 bg-accent rounded-full progress-dots" style="animation-delay: 0.1s"></div>
+                        <div class="w-2 h-2 bg-accent rounded-full progress-dots" style="animation-delay: 0.2s"></div>
+                        <div class="w-2 h-2 bg-accent rounded-full progress-dots" style="animation-delay: 0.3s"></div>
+                        <div class="w-2 h-2 bg-accent rounded-full progress-dots" style="animation-delay: 0.4s"></div>
+                        <div class="w-2 h-2 bg-white/50 rounded-full progress-dots" style="animation-delay: 0.5s"></div>
+                        <div class="w-2 h-2 bg-white/50 rounded-full progress-dots" style="animation-delay: 0.6s"></div>
+                        <div class="w-2 h-2 bg-white/50 rounded-full progress-dots" style="animation-delay: 0.7s"></div>
+                        <div class="w-2 h-2 bg-white/50 rounded-full progress-dots" style="animation-delay: 0.8s"></div>
+                        <div class="w-2 h-2 bg-white/50 rounded-full progress-dots" style="animation-delay: 0.9s"></div>
+                    </div>
+                    <div class="text-sm text-muted-foreground mb-4">Merkle Path: <span id="merkleProgress" class="text-accent font-mono">45%</span></div>
+                    
+                    <!-- Merkle tree visualization -->
+                    <div class="bg-secondary border border-border rounded-md p-4 mb-4">
+                        <div class="flex flex-col items-center space-y-2">
+                            <div class="w-3 h-3 bg-accent rounded-full pulse-dot"></div>
+                            <div class="flex space-x-4">
+                                <div class="w-3 h-3 bg-white/70 rounded-full pulse-dot" style="animation-delay: 0.5s"></div>
+                                <div class="w-3 h-3 bg-white/70 rounded-full pulse-dot" style="animation-delay: 0.7s"></div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-white/50 rounded-full pulse-dot" style="animation-delay: 1s"></div>
+                                <div class="w-3 h-3 bg-white/50 rounded-full pulse-dot" style="animation-delay: 1.2s"></div>
+                                <div class="w-3 h-3 bg-white/50 rounded-full pulse-dot" style="animation-delay: 1.4s"></div>
+                                <div class="w-3 h-3 bg-white/50 rounded-full pulse-dot" style="animation-delay: 1.6s"></div>
+                            </div>
+                            <div class="flex space-x-1">
+                                <div class="w-2 h-2 bg-white/30 rounded-full pulse-dot" style="animation-delay: 2s"></div>
+                                <div class="w-2 h-2 bg-white/30 rounded-full pulse-dot" style="animation-delay: 2.2s"></div>
+                                <div class="w-2 h-2 bg-white/30 rounded-full pulse-dot" style="animation-delay: 2.4s"></div>
+                                <div class="w-2 h-2 bg-white/30 rounded-full pulse-dot" style="animation-delay: 2.6s"></div>
+                                <div class="w-2 h-2 bg-white/30 rounded-full pulse-dot" style="animation-delay: 2.8s"></div>
+                                <div class="w-2 h-2 bg-white/30 rounded-full pulse-dot" style="animation-delay: 3s"></div>
+                                <div class="w-2 h-2 bg-white/30 rounded-full pulse-dot" style="animation-delay: 3.2s"></div>
+                                <div class="w-2 h-2 bg-white/30 rounded-full pulse-dot" style="animation-delay: 3.4s"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-left space-y-2 mb-4">
+                        <div class="text-sm">Current Step:</div>
+                        <div class="text-xs text-accent ml-4">● Witness Generation (3/4)</div>
+                        <div class="text-xs text-muted-foreground ml-4">● Constraint Satisfaction</div>
+                        <div class="text-xs text-muted-foreground ml-4">● Groth16 Proving...</div>
+                    </div>
+                    
+                    <div class="text-sm text-accent font-mono mb-2">Time remaining: ~8 seconds</div>
+                    <div class="text-xs text-muted-foreground">Privacy Level: 47,293 users</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => console.log('SW registered'))
+                .catch(error => console.log('SW registration failed'));
+        }
+
+        // Modal Management
+        function showDepositFlow() {
+            document.getElementById('depositModal').classList.remove('hidden');
+        }
+
+        function closeDepositFlow() {
+            document.getElementById('depositModal').classList.add('hidden');
+            document.getElementById('depositProcessModal').classList.add('hidden');
+        }
+
+        function showWithdrawFlow() {
+            document.getElementById('withdrawModal').classList.remove('hidden');
+        }
+
+        function closeWithdrawFlow() {
+            document.getElementById('withdrawModal').classList.add('hidden');
+        }
+
+        function startDepositProcess() {
+            // TODO: Implement form validation
+            document.getElementById('depositModal').classList.add('hidden');
+            document.getElementById('depositProcessModal').classList.remove('hidden');
+            
+            // Simulate commitment generation (3 seconds)
+            setTimeout(() => {
+                document.getElementById('commitmentStep').classList.add('hidden');
+                document.getElementById('blockchainStep').classList.remove('hidden');
+                
+                // Simulate blockchain confirmation (5 seconds)
+                setTimeout(() => {
+                    closeDepositFlow();
+                    // TODO: Update balance and activity feed
+                }, 5000);
+            }, 3000);
+        }
+
+        function startZKProof() {
+            document.getElementById('scanningStep').classList.add('hidden');
+            document.getElementById('zkProofStep').classList.remove('hidden');
+            
+            // Simulate ZK proof generation (12 seconds)
+            let progress = 45;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(progressInterval);
+                    setTimeout(() => {
+                        closeWithdrawFlow();
+                        // TODO: Update balance and complete withdrawal
+                    }, 2000);
+                }
+                document.getElementById('merkleProgress').textContent = Math.round(progress) + '%';
+            }, 800);
+        }
+
+        // Animate hash progress during commitment generation
+        let hashProgress = 67;
+        setInterval(() => {
+            if (document.getElementById('hashProgress')) {
+                hashProgress += Math.random() * 5;
+                if (hashProgress >= 100) hashProgress = 100;
+                document.getElementById('hashProgress').textContent = Math.round(hashProgress) + '%';
+            }
+        }, 500);
+
+        // PWA Install Prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            // Show install button
+        });
+
+        // Simulate real-time privacy metrics updates
+        setInterval(() => {
+            // TODO: Update anonymity set and privacy metrics from blockchain
+        }, 30000);
+    </script>
+
+    <!-- Service Worker for PWA -->
+    <script>
+        // Inline service worker for demo purposes
+        const swCode = `
+            const CACHE_NAME = 'zkether-v1';
+            const urlsToCache = [
+                '/',
+                '/manifest.json'
+            ];
+
+            self.addEventListener('install', (event) => {
+                event.waitUntil(
+                    caches.open(CACHE_NAME)
+                        .then((cache) => cache.addAll(urlsToCache))
+                );
+            });
+
+            self.addEventListener('fetch', (event) => {
+                event.respondWith(
+                    caches.match(event.request)
+                        .then((response) => {
+                            return response || fetch(event.request);
+                        })
+                );
+            });
+        `;
+        
+        const blob = new Blob([swCode], { type: 'application/javascript' });
+        const swUrl = URL.createObjectURL(blob);
+        
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register(swUrl);
+        }
+    </script>
+</body>
+</html>

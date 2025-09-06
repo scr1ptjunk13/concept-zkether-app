@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import BalanceCard from "@/components/balance-card";
 import PrivacyMeter from "@/components/privacy-meter";
 import DepositFlow from "@/components/deposit-flow";
@@ -9,20 +8,15 @@ import { useOnboarding } from "@/contexts/onboarding-context";
 import { Button } from "@/components/ui/button";
 import { Settings } from "lucide-react";
 import { useState } from "react";
+import { mockData } from "@/lib/queryClient";
 
 export default function Home() {
   const [showDeposit, setShowDeposit] = useState(false);
   const [showWithdraw, setShowWithdraw] = useState(false);
   const { walletAddress, walletBalance, walletType, resetOnboarding } = useOnboarding();
 
-  const { data: balance } = useQuery({
-    queryKey: ["/api/balance"],
-  });
-
-  const { data: privacyMetrics } = useQuery({
-    queryKey: ["/api/privacy-metrics"],
-    refetchInterval: 30000, // Update every 30 seconds
-  });
+  const balance = mockData.balance;
+  const privacyMetrics = mockData.privacyMetrics;
 
   return (
     <div className="min-h-screen bg-background">

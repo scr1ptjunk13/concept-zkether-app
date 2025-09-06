@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { apiRequest } from "@/lib/queryClient";
+import { queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import DotMatrix from "./dot-matrix";
 import { motion, AnimatePresence } from "framer-motion";
@@ -54,19 +54,13 @@ export default function WithdrawFlow({ onClose }: WithdrawFlowProps) {
 
   const withdrawalMutation = useMutation({
     mutationFn: async () => {
-      const response = await apiRequest("POST", "/api/withdrawals", {
-        amount: selectedNote?.amount || 1.0,
-        nullifierHash: `0x${Math.random().toString(16).slice(2, 66)}`,
-        proof: `0x${Math.random().toString(16).slice(2, 512)}`,
-        recipient: withdrawalAddress
-      });
-      return response.json();
+      // Simulate ZK proof generation delay (8-15 seconds)
+      const proofTime = 8000 + Math.random() * 7000;
+      await new Promise(resolve => setTimeout(resolve, proofTime));
+      return { success: true, id: Math.random().toString(36) };
     },
     onSuccess: () => {
       setStep("complete");
-      queryClient.invalidateQueries({ queryKey: ["/api/balance"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/privacy-metrics"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/activity"] });
     },
     onError: () => {
       toast({

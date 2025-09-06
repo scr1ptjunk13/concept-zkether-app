@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { apiRequest } from "@/lib/queryClient";
+import { queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useOnboarding } from "@/contexts/onboarding-context";
 import DotMatrix from "./dot-matrix";
@@ -31,14 +31,12 @@ export default function DepositFlow({ onClose }: DepositFlowProps) {
 
   const depositMutation = useMutation({
     mutationFn: async (data: { recipient: string; amount: number; commitment: string }) => {
-      const response = await apiRequest("POST", "/api/deposits", data);
-      return response.json();
+      // Simulate deposit processing delay
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      return { success: true, id: Math.random().toString(36) };
     },
     onSuccess: () => {
       setStep("confirmed");
-      queryClient.invalidateQueries({ queryKey: ["/api/balance"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/privacy-metrics"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/activity"] });
     },
     onError: () => {
       toast({
