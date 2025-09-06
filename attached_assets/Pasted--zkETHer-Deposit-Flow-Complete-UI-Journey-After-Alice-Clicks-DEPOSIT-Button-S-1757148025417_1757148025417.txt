@@ -1,0 +1,317 @@
+# zkETHer Deposit Flow - Complete UI Journey
+
+## 💰 **After Alice Clicks "DEPOSIT" Button**
+
+### **Step 1: Recipient & Amount Input**
+```
+┌─────────────────────────────────┐
+│  ← Send ETH Privately           │
+│                                 │
+│  Send to:                       │
+│  ┌─────────────────────────────┐ │
+│  │ Bob's zkETHer Public Key    │ │ ← Input field
+│  │ 0x1a2b3c4d...               │ │
+│  │ ●●●●●●●●●●●●●●●●●●●●●●●●●●● │ │ ← Dots animate as typing
+│  └─────────────────────────────┘ │
+│                                 │
+│  [ QR SCAN ] [ CONTACTS ]       │
+│                                 │
+│  Amount: 1.00 ETH (Fixed)       │ ← zkETHer spec requirement
+│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │ ← Fixed denomination visual
+│                                 │
+│  From Wallet:                   │
+│  ┌─────────────────────────────┐ │
+│  │ MetaMask (0x456abc...)      │ │ ← Connected wallet
+│  │ Balance: 5.47 ETH           │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  Privacy Notice:                │
+│  ⚠️ This deposit will be PUBLIC │
+│  🔒 Withdrawal will be UNLINKABLE│
+│                                 │
+│         ● CONTINUE ●            │
+└─────────────────────────────────┘
+```
+
+### **Step 2: Deposit Confirmation**
+```
+┌─────────────────────────────────┐
+│  ← Confirm Deposit              │
+│                                 │
+│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │
+│                                 │
+│  Creating Private Note          │
+│  For: Bob (0x1a2b3c4d...)       │
+│  Amount: 1.00 ETH               │
+│                                 │
+│  Transaction Details:           │
+│  ┌─────────────────────────────┐ │
+│  │ Gas Fee: ~0.003 ETH         │ │
+│  │ Total Cost: 1.003 ETH       │ │
+│  │                             │ │
+│  │ Your deposit will be:       │ │
+│  │ ✓ Added to privacy pool     │ │
+│  │ ✓ Visible on blockchain     │ │
+│  │ ✓ Unlinkable when withdrawn │ │
+│  │                             │ │
+│  │ Current Anonymity Set:      │ │
+│  │ 47,293 users                │ │
+│  │ ●●●●●●●●●●●●●●●●●●●●●●●●●●● │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  [ CANCEL ]    ● DEPOSIT ●      │
+└─────────────────────────────────┘
+```
+
+### **Step 3: Commitment Generation (2-3 seconds)**
+```
+┌─────────────────────────────────┐
+│  Generating Commitment...       │
+│                                 │
+│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │
+│  Progress: 67% Complete         │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │  ●    ●    ●    ●    ●     │ │ ← Hash computation visual
+│  │    ●    ●    ●    ●    ●   │ │   (dots connecting)
+│  │  ●    ●    ●    ●    ●     │ │
+│  │    ●    ●    ●    ●    ●   │ │
+│  │  ●    ●    ●    ●    ●     │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  Current Step:                  │
+│  ✓ Random Nonce Generated       │
+│  ✓ Note Construction            │
+│  ● Poseidon Hash Computing...   │ ← Currently processing
+│  ○ Commitment Finalization      │
+│                                 │
+│  Creating note for Bob...       │
+│  Nonce: 0xabc123... ●●●●●●●●●● │
+│                                 │
+│  Time remaining: ~1 second      │
+└─────────────────────────────────┘
+```
+
+### **Step 4: Wallet Transaction Approval**
+```
+┌─────────────────────────────────┐
+│  Approve in Wallet...           │
+│                                 │
+│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │
+│  Commitment Generated ✓         │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │     📱 MetaMask             │ │
+│  │                             │ │
+│  │  zkETHer Deposit            │ │
+│  │  To: 0x...contract          │ │
+│  │  Amount: 1.00 ETH           │ │
+│  │  Gas: 0.003 ETH             │ │
+│  │                             │ │
+│  │  Data: 0xabc123...          │ │ ← Commitment hash
+│  │                             │ │
+│  │  [ REJECT ] [ CONFIRM ]     │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  Waiting for wallet approval... │
+│                                 │
+│  Note: This transaction will be │
+│  publicly visible on Ethereum   │
+└─────────────────────────────────┘
+```
+
+### **Step 5: Blockchain Submission**
+```
+┌─────────────────────────────────┐
+│  Broadcasting Transaction...    │
+│                                 │
+│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │
+│  Ethereum Network: Confirming   │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │     ●                       │ │ ← Network propagation animation
+│  │   ●   ●   ●                 │ │   (dots spreading outward)
+│  │ ●   ●   ●   ●   ●           │ │
+│  │   ●   ●   ●   ●             │ │
+│  │     ●   ●                   │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  Transaction Hash:              │
+│  0xdef456ghi789...              │
+│                                 │
+│  Status: Pending...             │
+│  Block: Waiting for inclusion   │
+│  Confirmations: 0/3             │
+│                                 │
+│  [ VIEW ON ETHERSCAN ]          │
+└─────────────────────────────────┘
+```
+
+### **Step 6: Transaction Confirmed**
+```
+┌─────────────────────────────────┐
+│  Transaction Confirmed ✓        │
+│                                 │
+│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │
+│  Added to zkETHer Pool          │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │ Commitment: 0xabc123...     │ │
+│  │ Leaf Index: #47,296         │ │ ← Position in Merkle tree
+│  │ Block: #18,500,158          │ │
+│  │                             │ │
+│  │ Privacy Pool Status:        │ │
+│  │ Total Deposits: 47,296      │ │
+│  │ Anonymity Set: +1 user      │ │
+│  │ ●●●●●●●●●●●●●●●●●●●●●●●●●●● │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  Next Step: Share note with Bob │
+│                                 │
+│  [ VIEW TRANSACTION ]           │
+│  [ SHARE NOTE ]                 │
+│  [ BACK TO HOME ]               │
+└─────────────────────────────────┘
+```
+
+### **Step 7: Note Sharing Options**
+```
+┌─────────────────────────────────┐
+│  ← Share Note with Bob          │
+│                                 │
+│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │
+│                                 │
+│  Bob needs this information     │
+│  to discover the note:          │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │ Amount: 1.00 ETH            │ │
+│  │ Nonce: 0xabc123def456...    │ │
+│  │ Leaf Index: #47,296         │ │
+│  │                             │ │
+│  │ ⚠️ KEEP THIS PRIVATE        │ │
+│  │ Only share via secure       │ │
+│  │ channels (Signal, etc.)     │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  Sharing Options:               │
+│  ┌─────────────────────────────┐ │
+│  │ 📱 Send via Signal          │ │
+│  │ 📧 Encrypted Email          │ │
+│  │ 📋 Copy to Clipboard        │ │
+│  │ 🔗 Generate Secure Link     │ │
+│  │ ⏰ Auto-delete after 24h    │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  [ SKIP FOR NOW ] [ SHARE ]     │
+└─────────────────────────────────┘
+```
+
+### **Step 8: Deposit Complete**
+```
+┌─────────────────────────────────┐
+│  ✓ Deposit Successful           │
+│                                 │
+│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │         ✓ COMPLETE          │ │
+│  │                             │ │
+│  │    1.00 ETH Deposited       │ │
+│  │    For: Bob                 │ │
+│  │                             │ │
+│  │    Privacy Status:          │ │
+│  │    Added to anonymity set   │ │
+│  │    of 47,296 users          │ │
+│  │                             │ │
+│  │    ●●●●●●●●●●●●●●●●●●●●●●● │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  What happens next:             │
+│  • Bob's app will scan deposits │
+│  • Trial decryption will find   │
+│    your note automatically      │
+│  • Bob can withdraw unlinkably  │
+│                                 │
+│  Transaction: 0xdef456...       │
+│  Block: #18,500,158             │
+│  Gas Used: 21,234               │
+│                                 │
+│  [ VIEW TRANSACTION ]           │
+│  [ SEND ANOTHER ]               │
+│  [ BACK TO HOME ]               │
+└─────────────────────────────────┘
+```
+
+---
+
+## 🔧 **Technical Details Behind Each Step:**
+
+### **Step 1 - Recipient Validation:**
+```javascript
+// Validate zkETHer public key format
+const isValidZkKey = (pubkey) => {
+    return pubkey.length === 64 && /^0x[0-9a-fA-F]{62}$/.test(pubkey);
+};
+```
+
+### **Step 3 - Commitment Generation:**
+```javascript
+// mopro commitment generation on Android
+const nonce = crypto.getRandomValues(new Uint8Array(32));
+const commitment = await generateWitness({
+    circuit: 'poseidon_hash',
+    inputs: [
+        BigInt("1000000000000000000"), // 1 ETH in Wei
+        Bob_pubkey,
+        bytes_to_field(nonce)
+    ]
+});
+```
+
+### **Step 4 - Wallet Integration:**
+```javascript
+// WalletConnect transaction
+const txData = {
+    to: zkETHer_contract_address,
+    value: "1000000000000000000", // 1 ETH
+    data: commitment, // 32-byte commitment hash
+    gas: "21000"
+};
+await wallet.sendTransaction(txData);
+```
+
+### **Step 7 - Secure Note Sharing:**
+```javascript
+// Generate shareable note data
+const noteData = {
+    amount: "1000000000000000000",
+    nonce: nonce_hex,
+    leafIndex: event.leafIndex,
+    commitment: commitment_hash
+};
+
+// Encrypt for sharing
+const encrypted = encrypt_AES256(JSON.stringify(noteData), shared_secret);
+```
+
+## 🎯 **Key UX Principles:**
+
+1. **Privacy transparency**: Clear about what's public (deposit) vs private (withdrawal)
+2. **Fixed denominations**: 1 ETH only, as per zkETHer spec
+3. **Wallet integration**: Seamless MetaMask/WalletConnect flow
+4. **Secure sharing**: Multiple options for sharing note data with Bob
+5. **Educational**: Explains what happens next (trial decryption, etc.)
+
+## 🔄 **Deposit vs Withdrawal Differences:**
+
+| Aspect | Deposit | Withdrawal |
+|--------|---------|------------|
+| **Complexity** | Simple (2-3 seconds) | Complex (8-15 seconds) |
+| **Privacy** | Public transaction | Unlinkable transaction |
+| **Amount** | Fixed 1 ETH | Fixed 1 ETH per note |
+| **Selection** | Choose recipient | Choose which note |
+| **Proving** | Commitment generation | ZK proof generation |
+| **Sharing** | Must share note data | No sharing needed |
+
+This deposit flow is much simpler than withdrawal since it doesn't require ZK proof generation - just commitment creation and standard Ethereum transaction submission.
