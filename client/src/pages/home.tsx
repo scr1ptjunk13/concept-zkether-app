@@ -5,11 +5,15 @@ import DepositFlow from "@/components/deposit-flow";
 import WithdrawFlow from "@/components/withdraw-flow";
 import ActivityFeed from "@/components/activity-feed";
 import DotMatrix from "@/components/dot-matrix";
+import { useOnboarding } from "@/contexts/onboarding-context";
+import { Button } from "@/components/ui/button";
+import { Settings } from "lucide-react";
 import { useState } from "react";
 
 export default function Home() {
   const [showDeposit, setShowDeposit] = useState(false);
   const [showWithdraw, setShowWithdraw] = useState(false);
+  const { walletAddress, walletBalance, walletType, resetOnboarding } = useOnboarding();
 
   const { data: balance } = useQuery({
     queryKey: ["/api/balance"],
@@ -47,11 +51,37 @@ export default function Home() {
       {/* Main App Container */}
       <div className="max-w-md mx-auto min-h-screen bg-background">
         {/* Header with App Title */}
-        <header className="px-6 py-6 text-center">
-          <div className="flex items-center justify-center space-x-2 breathing-dots">
-            <DotMatrix pattern="header" />
-            <h1 className="text-2xl font-mono font-bold tracking-wider">zkETHer</h1>
-            <DotMatrix pattern="header" />
+        <header className="px-6 py-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-2 breathing-dots">
+              <DotMatrix pattern="header" />
+              <h1 className="text-2xl font-mono font-bold tracking-wider">zkETHer</h1>
+              <DotMatrix pattern="header" />
+            </div>
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={resetOnboarding}
+              data-testid="button-reset-onboarding"
+            >
+              <Settings className="w-4 h-4" />
+            </Button>
+          </div>
+          
+          {/* Connected Wallet Info */}
+          <div className="bg-card border border-border rounded-lg p-3 text-sm">
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground">Connected Wallet:</span>
+              <div className="flex items-center space-x-2">
+                <span className="text-xs">📱</span>
+                <span className="font-mono" data-testid="text-connected-wallet">
+                  {walletType} ({walletBalance} ETH)
+                </span>
+              </div>
+            </div>
+            <div className="text-xs text-muted-foreground font-mono mt-1" data-testid="text-wallet-address">
+              {walletAddress?.slice(0, 8)}...{walletAddress?.slice(-6)}
+            </div>
           </div>
         </header>
 
