@@ -1,0 +1,305 @@
+# zkETHer Onboarding Flow - Wallet Connection & Setup
+
+## 🚀 **App Launch Sequence**
+
+### **Screen 1: Welcome Screen**
+```
+┌─────────────────────────────────┐
+│                                 │
+│         ●●●  zkETHer  ●●●       │
+│                                 │
+│     Private ETH Transfers       │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │                             │ │
+│  │    ●●●●●●●●●●●●●●●●●●●●●   │ │ ← Animated dots
+│  │  ●●●●●●●●●●●●●●●●●●●●●●●   │ │
+│  │    ●●●●●●●●●●●●●●●●●●●●●   │ │
+│  │                             │ │
+│  │   Send ETH Unlinkably       │ │
+│  │   Break Transaction Links   │ │
+│  │   Protect Your Privacy      │ │
+│  │                             │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│         ● GET STARTED ●         │
+│                                 │
+│    [ Learn More ] [ Skip ]      │
+└─────────────────────────────────┘
+```
+
+### **Screen 2: Connect Wallet**
+```
+┌─────────────────────────────────┐
+│  ← Connect Your Wallet          │
+│                                 │
+│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │
+│                                 │
+│  zkETHer needs access to your   │
+│  Ethereum wallet for deposits   │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │ 📱 MetaMask Mobile          │ │
+│  │    Most popular wallet      │ │
+│  │    ●●●●●●●●●●●●●●●●●●●●●●● │ │
+│  │    [ CONNECT METAMASK ]     │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │ 🌈 Rainbow Wallet           │ │
+│  │    Beautiful & secure       │ │
+│  │    ●●●●●●●●●●●●●●●●●●●●●●● │ │
+│  │    [ CONNECT RAINBOW ]      │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │ 🔗 WalletConnect            │ │
+│  │    Other wallets            │ │
+│  │    ●●●●●●●●●●●●●●●●●●●●●●● │ │
+│  │    [ SCAN QR CODE ]         │ │
+│  └─────────────────────────────┘ │
+└─────────────────────────────────┘
+```
+
+### **Screen 3: Wallet Connection Process**
+```
+┌─────────────────────────────────┐
+│  Connecting to MetaMask...      │
+│                                 │
+│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │
+│  Please approve in MetaMask     │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │     📱 MetaMask             │ │
+│  │                             │ │
+│  │  zkETHer wants to connect   │ │
+│  │                             │ │
+│  │  Permissions requested:     │ │
+│  │  • View account address     │ │
+│  │  • Request transaction      │ │
+│  │    approval                 │ │
+│  │                             │ │
+│  │  [ CANCEL ] [ CONNECT ]     │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  This allows zkETHer to:        │
+│  ✓ Show your ETH balance        │
+│  ✓ Request deposit transactions │
+│  ✗ Never access your private    │
+│    keys or move funds without   │
+│    your approval                │
+└─────────────────────────────────┘
+```
+
+### **Screen 4: Wallet Connected Successfully**
+```
+┌─────────────────────────────────┐
+│  ✓ Wallet Connected             │
+│                                 │
+│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │         ✓ SUCCESS           │ │
+│  │                             │ │
+│  │  Connected to MetaMask      │ │
+│  │  Address: 0x456abc...       │ │
+│  │  Balance: 5.47 ETH          │ │ ← Shows actual balance
+│  │                             │ │
+│  │  ●●●●●●●●●●●●●●●●●●●●●●●●● │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  Next: Generate your zkETHer    │
+│  privacy keys                   │
+│                                 │
+│         ● CONTINUE ●            │
+└─────────────────────────────────┘
+```
+
+### **Screen 5: Generate zkETHer Keys**
+```
+┌─────────────────────────────────┐
+│  ← Generate Privacy Keys        │
+│                                 │
+│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │
+│                                 │
+│  zkETHer uses separate keys     │
+│  for privacy (different from    │
+│  your MetaMask keys)            │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │ 🔐 Privacy Key Features:    │ │
+│  │                             │ │
+│  │ ✓ Receive private notes     │ │
+│  │ ✓ Generate ZK proofs        │ │
+│  │ ✓ Unlinkable withdrawals    │ │
+│  │ ✓ Stored securely on device │ │
+│  │                             │ │
+│  │ ⚠️ Keep these keys safe!    │ │
+│  │ Lost keys = lost funds      │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  [ BACKUP LATER ] ● GENERATE ● │
+└─────────────────────────────────┘
+```
+
+### **Screen 6: Key Generation Process**
+```
+┌─────────────────────────────────┐
+│  Generating Privacy Keys...     │
+│                                 │
+│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │
+│  Progress: 89% Complete         │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │  ●    ●    ●    ●    ●     │ │ ← Key generation visual
+│  │    ●    ●    ●    ●    ●   │ │   (dots connecting)
+│  │  ●    ●    ●    ●    ●     │ │
+│  │    ●    ●    ●    ●    ●   │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  Current Step:                  │
+│  ✓ Random Entropy Generated     │
+│  ✓ Private Key Created          │
+│  ● Public Key Deriving...       │ ← Currently processing
+│  ○ Secure Storage               │
+│                                 │
+│  Creating your privacy          │
+│  identity...                    │
+│                                 │
+│  Time remaining: ~2 seconds     │
+└─────────────────────────────────┘
+```
+
+### **Screen 7: Setup Complete - Main Interface**
+```
+┌─────────────────────────────────┐
+│  ●●●  zkETHer  ●●●             │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │     ●●●●●●●●●●●●●●●●●●●●●   │ │
+│  │   ●●●●●●●●●●●●●●●●●●●●●●●   │ │
+│  │    0.00 ETH UNLINKABLE      │ │ ← zkETHer balance
+│  │     ●●●●●●●●●●●●●●●●●●●●●   │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  Connected Wallet:              │ ← Shows connected wallet
+│  📱 MetaMask (5.47 ETH)         │
+│                                 │
+│  Anonymity Set: 0 users         │
+│  ○○○○○○○○○○○○○○○○○○○○○○○○○○○○○○ │
+│  Be the first to deposit!       │
+│                                 │
+│  ┌──────────────┐ ┌─────────────┐ │
+│  │   ● DEPOSIT  │ │ ● WITHDRAW  │ │
+│  │   (Public)   │ │ (Disabled)  │ │
+│  └──────────────┘ └─────────────┘ │
+│                                 │
+│  Recent Activity                │
+│  No recent activity             │
+└─────────────────────────────────┘
+```
+
+---
+
+## 🔧 **Technical Implementation**
+
+### **Wallet Connection Logic:**
+```javascript
+// App.js - Main component
+import { WalletConnectModal } from '@walletconnect/modal-react-native';
+import { useWalletConnect } from '@walletconnect/react-native-dapp';
+
+export default function ZkETHerApp() {
+    const [isWalletConnected, setIsWalletConnected] = useState(false);
+    const [zkKeysGenerated, setZkKeysGenerated] = useState(false);
+    const connector = useWalletConnect();
+
+    // Check if user has completed onboarding
+    useEffect(() => {
+        checkOnboardingStatus();
+    }, []);
+
+    const checkOnboardingStatus = async () => {
+        const walletConnected = await AsyncStorage.getItem('wallet_connected');
+        const zkKeys = await AsyncStorage.getItem('zk_keys_generated');
+        
+        setIsWalletConnected(!!walletConnected);
+        setZkKeysGenerated(!!zkKeys);
+    };
+
+    // Show appropriate screen based on onboarding status
+    if (!isWalletConnected) {
+        return <WalletConnectionFlow />;
+    }
+    
+    if (!zkKeysGenerated) {
+        return <ZkKeyGenerationFlow />;
+    }
+    
+    return <MainZkETHerInterface />;
+}
+```
+
+### **Wallet Integration:**
+```javascript
+// WalletService.js
+class WalletService {
+    async connectWallet() {
+        try {
+            const accounts = await connector.connect();
+            const address = accounts[0];
+            const balance = await this.getBalance(address);
+            
+            // Store connection status
+            await AsyncStorage.setItem('wallet_connected', 'true');
+            await AsyncStorage.setItem('wallet_address', address);
+            
+            return { address, balance };
+        } catch (error) {
+            throw new Error('Failed to connect wallet');
+        }
+    }
+    
+    async getBalance(address) {
+        const balance = await connector.getBalance(address);
+        return ethers.utils.formatEther(balance);
+    }
+}
+```
+
+### **zkETHer Key Generation:**
+```javascript
+// ZkKeyService.js
+class ZkKeyService {
+    async generateKeys() {
+        // Generate cryptographically secure random private key
+        const privateKey = crypto.getRandomValues(new Uint8Array(32));
+        const publicKey = this.derivePublicKey(privateKey);
+        
+        // Encrypt and store securely
+        const encryptedKeys = await this.encryptKeys(privateKey, publicKey);
+        await AsyncStorage.setItem('zk_keys_generated', 'true');
+        await AsyncStorage.setItem('zk_private_key', encryptedKeys.private);
+        await AsyncStorage.setItem('zk_public_key', encryptedKeys.public);
+        
+        return { privateKey, publicKey };
+    }
+}
+```
+
+## 🎯 **Key Design Decisions:**
+
+1. **Wallet Connection First**: Users connect existing wallet before accessing zkETHer features
+2. **Separate Key Generation**: zkETHer privacy keys are separate from wallet keys
+3. **Balance Integration**: Show both MetaMask balance (for deposits) and zkETHer balance (unlinkable funds)
+4. **Progressive Onboarding**: Step-by-step setup with clear explanations
+5. **Security Emphasis**: Explain why separate keys are needed for privacy
+
+## 📱 **User Flow:**
+```
+App Launch → Connect Wallet → Generate zkETHer Keys → Main Interface
+     ↓              ↓                    ↓               ↓
+  Welcome      MetaMask/Rainbow    Privacy Keys    zkETHer Features
+```
+
+This onboarding flow ensures users understand they're connecting an existing wallet (not creating a new one) while setting up the additional privacy infrastructure zkETHer needs.
