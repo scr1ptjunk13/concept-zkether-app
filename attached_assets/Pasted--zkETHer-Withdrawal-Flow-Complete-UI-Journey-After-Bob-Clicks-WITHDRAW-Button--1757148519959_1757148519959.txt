@@ -1,0 +1,240 @@
+# zkETHer Withdrawal Flow - Complete UI Journey
+
+## 🔄 **After Bob Clicks "WITHDRAW" Button**
+
+### **Step 1: Note Selection Screen**
+```
+┌─────────────────────────────────┐
+│  ← Select Note to Withdraw      │
+│                                 │
+│  Available Notes: 2             │ ← Bob has 2 discoverable notes
+│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │ ● Note #1                   │ │ ← First note option
+│  │   1.00 ETH                  │ │
+│  │   Received: 2 days ago      │ │
+│  │   Privacy Set: 47,293       │ │
+│  │   ●●●●●●●●●●●●●●●●●●●●●●●●● │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │ ● Note #2                   │ │ ← Second note option
+│  │   1.00 ETH                  │ │
+│  │   Received: 5 hours ago     │ │
+│  │   Privacy Set: 47,295       │ │ ← Newer = larger anonymity set
+│  │   ●●●●●●●●●●●●●●●●●●●●●●●●● │ │
+│  │   ✓ RECOMMENDED             │ │ ← Better privacy
+│  └─────────────────────────────┘ │
+│                                 │
+│  Withdraw to Address:           │
+│  ┌─────────────────────────────┐ │
+│  │ 0x789def...                 │ │ ← Bob's withdrawal address
+│  └─────────────────────────────┘ │
+│                                 │
+│         ● CONTINUE ●            │
+└─────────────────────────────────┘
+```
+
+### **Step 2: Withdrawal Confirmation**
+```
+┌─────────────────────────────────┐
+│  ← Confirm Withdrawal           │
+│                                 │
+│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │
+│                                 │
+│  Withdrawing Note #2            │
+│  Amount: 1.00 ETH               │
+│  To: 0x789def...                │
+│                                 │
+│  Privacy Analysis:              │
+│  ┌─────────────────────────────┐ │
+│  │ Anonymity Set: 47,295 users │ │
+│  │ Your Unlinkability: 99.998% │ │
+│  │ ●●●●●●●●●●●●●●●●●●●●●●●●●●● │ │
+│  │                             │ │
+│  │ Estimated Time: 12 seconds  │ │ ← ZK proving time
+│  │ Relayer Fee: 0.001 ETH      │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  ⚠️  This action cannot be undone │
+│                                 │
+│  [ CANCEL ]    ● WITHDRAW ●     │
+└─────────────────────────────────┘
+```
+
+### **Step 3: ZK Proof Generation (8-15 seconds)**
+```
+┌─────────────────────────────────┐
+│  Generating Zero-Knowledge Proof │
+│                                 │
+│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │
+│  Progress: 34% Complete         │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │        ●                    │ │ ← Merkle tree visualization
+│  │      ●   ●                  │ │   (building path upward)
+│  │    ●   ●   ●   ●            │ │
+│  │  ●   ●   ●   ●   ●   ●      │ │
+│  │●   ●   ●   ●   ●   ●   ●   ●│ │ ← Your note position hidden
+│  └─────────────────────────────┘ │
+│                                 │
+│  Current Step:                  │
+│  ✓ Merkle Path Construction     │
+│  ✓ Nullifier Generation         │
+│  ● Witness Generation (3/4)     │ ← Currently processing
+│  ○ Constraint Satisfaction      │
+│  ○ Groth16 Proving              │
+│  ○ Verification                 │
+│                                 │
+│  Time remaining: ~8 seconds     │
+│                                 │
+│  Privacy Status: Generating     │
+│  unlinkable proof for 47,295    │
+│  user anonymity set...          │
+└─────────────────────────────────┘
+```
+
+### **Step 4: Proof Complete - Relayer Submission**
+```
+┌─────────────────────────────────┐
+│  Submitting via Relayer...      │
+│                                 │
+│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │
+│  Proof Generated Successfully   │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │  [Your Device] ●●●●●●       │ │ ← Privacy flow visualization
+│  │                ●●●●●●       │ │
+│  │         [Relayer] ●●●●●●    │ │
+│  │                    ●●●●●●   │ │
+│  │              [zkETHer] ●●●● │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  Relayer: zkether-relay-03      │
+│  Status: Validating proof...    │
+│  Fee: 0.001 ETH                 │
+│                                 │
+│  Your identity: Protected ●●●   │
+│  Transaction link: Broken ●●●   │
+│                                 │
+│  Estimated confirmation: 30s    │
+└─────────────────────────────────┘
+```
+
+### **Step 5: Blockchain Confirmation**
+```
+┌─────────────────────────────────┐
+│  Transaction Broadcasting...    │
+│                                 │
+│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │
+│  Ethereum Network: Confirming   │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │     ●                       │ │ ← Network propagation animation
+│  │   ●   ●   ●                 │ │   (dots spreading outward)
+│  │ ●   ●   ●   ●   ●           │ │
+│  │   ●   ●   ●   ●             │ │
+│  │     ●   ●                   │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  Transaction Hash:              │
+│  0xabc123def456...              │
+│                                 │
+│  Block: #18,500,157             │
+│  Confirmations: 1/3             │
+│                                 │
+│  [ VIEW ON ETHERSCAN ]          │
+└─────────────────────────────────┘
+```
+
+### **Step 6: Withdrawal Complete**
+```
+┌─────────────────────────────────┐
+│  ✓ Withdrawal Successful        │
+│                                 │
+│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │
+│                                 │
+│  ┌─────────────────────────────┐ │
+│  │         ✓ COMPLETE          │ │
+│  │                             │ │
+│  │    1.00 ETH Withdrawn       │ │
+│  │    To: 0x789def...          │ │
+│  │                             │ │
+│  │    Privacy Achieved:        │ │
+│  │    Unlinkable from 47,295   │ │
+│  │    possible deposits        │ │
+│  │                             │ │
+│  │    ●●●●●●●●●●●●●●●●●●●●●●● │ │
+│  └─────────────────────────────┘ │
+│                                 │
+│  Updated Balance:               │
+│  1.00 ETH UNLINKABLE            │ ← One note consumed
+│  (1 note remaining)             │
+│                                 │
+│  Transaction: 0xabc123...       │
+│  Block: #18,500,157             │
+│  Gas Used: 487,234              │
+│                                 │
+│  [ VIEW TRANSACTION ]           │
+│  [ WITHDRAW ANOTHER ]           │
+│  [ BACK TO HOME ]               │
+└─────────────────────────────────┘
+```
+
+---
+
+## 🔧 **Technical Details Behind Each Step:**
+
+### **Step 1 - Note Selection Logic:**
+```javascript
+// App shows all unspent notes Bob discovered
+const availableNotes = await db.getUnspentNotes(Bob_pubkey);
+const sortedNotes = availableNotes.sort((a, b) => 
+    b.anonymitySetSize - a.anonymitySetSize  // Recommend newer notes
+);
+```
+
+### **Step 3 - ZK Proof Generation:**
+```javascript
+// mopro WASM proving on Android
+const proof = await generateProof({
+    circuit: 'merkle_proof_d16.wasm',
+    privateInputs: {
+        note_amount: BigInt("1000000000000000000"),
+        note_owner_privkey: Bob_privkey,
+        note_nonce: selectedNote.nonce,
+        merkle_path: constructedPath,
+        merkle_path_indices: pathIndices
+    },
+    publicInputs: {
+        merkle_root: currentRoot,
+        nullifier: computedNullifier,
+        recipient: withdrawalAddress
+    }
+});
+```
+
+### **Step 4 - Relayer API:**
+```javascript
+// Submit to relayer for anonymity
+const response = await fetch('https://zkether-relayer.com/api/v1/withdraw', {
+    method: 'POST',
+    body: JSON.stringify({
+        proof: proof,
+        merkleRoot: currentRoot,
+        nullifier: nullifier,
+        recipient: withdrawalAddress
+    })
+});
+```
+
+## 🎯 **Key UX Principles:**
+
+1. **Note-based thinking**: Users understand they're spending specific 1 ETH notes
+2. **Privacy transparency**: Show exactly how unlinkable the withdrawal will be
+3. **Time expectations**: Clear progress indicators for 8-15 second proving
+4. **Relayer education**: Explain why relayer breaks transaction links
+5. **Balance updates**: Show remaining notes after withdrawal
+
+This flow makes the technical complexity of zkETHer understandable while maintaining the privacy guarantees.
