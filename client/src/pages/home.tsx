@@ -3,6 +3,7 @@ import PrivacyMeter from "@/components/privacy-meter";
 import DepositFlow from "@/components/deposit-flow";
 import WithdrawFlow from "@/components/withdraw-flow";
 import ComplianceDashboard from "@/components/compliance-dashboard";
+import SettingsScreen from "@/components/settings-screen";
 import ActivityFeed from "@/components/activity-feed";
 import DotMatrix from "@/components/dot-matrix";
 import { useOnboarding } from "@/contexts/onboarding-context";
@@ -15,6 +16,7 @@ export default function Home() {
   const [showDeposit, setShowDeposit] = useState(false);
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [showCompliance, setShowCompliance] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const { walletAddress, walletBalance, walletType, isKYCCompleted, resetOnboarding } = useOnboarding();
 
   const balance = mockData.balance;
@@ -73,8 +75,8 @@ export default function Home() {
               <Button 
                 variant="ghost" 
                 size="sm"
-                onClick={resetOnboarding}
-                data-testid="button-reset-onboarding"
+                onClick={() => setShowSettings(true)}
+                data-testid="button-settings"
               >
                 <Settings className="w-4 h-4" />
               </Button>
@@ -158,6 +160,12 @@ export default function Home() {
       {showCompliance && (
         <ComplianceDashboard 
           onClose={() => setShowCompliance(false)} 
+        />
+      )}
+      
+      {showSettings && (
+        <SettingsScreen 
+          onClose={() => setShowSettings(false)} 
         />
       )}
     </div>
