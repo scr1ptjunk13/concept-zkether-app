@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useOnboarding } from "@/contexts/onboarding-context";
 import DotMatrix from "./dot-matrix";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, AlertTriangle, Shield } from "lucide-react";
@@ -33,6 +34,7 @@ export default function WithdrawFlow({ onClose }: WithdrawFlowProps) {
   const [blockNumber, setBlockNumber] = useState(0);
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { isKYCCompleted } = useOnboarding();
 
   // Mock notes for demonstration
   const mockNotes: MockNote[] = [
@@ -287,6 +289,42 @@ export default function WithdrawFlow({ onClose }: WithdrawFlowProps) {
                       </div>
                     </CardContent>
                   </Card>
+                  
+                  {isKYCCompleted && (
+                    <Card>
+                      <CardContent className="p-4 space-y-3">
+                        <h4 className="font-medium text-sm flex items-center space-x-2">
+                          <Shield className="w-4 h-4" />
+                          <span>Compliance Check:</span>
+                        </h4>
+                        <div className="space-y-2">
+                          <div className="flex items-center space-x-2 text-sm">
+                            <span className="text-accent">✓</span>
+                            <span className="text-muted-foreground">Recipient KYC Verified</span>
+                          </div>
+                          <div className="flex items-center space-x-2 text-sm">
+                            <span className="text-accent">✓</span>
+                            <span className="text-muted-foreground">AML Screening Clear</span>
+                          </div>
+                          <div className="flex items-center space-x-2 text-sm">
+                            <span className="text-accent">✓</span>
+                            <span className="text-muted-foreground">FEMA Compliance Met</span>
+                          </div>
+                          <div className="flex items-center space-x-2 text-sm">
+                            <span className="text-accent">✓</span>
+                            <span className="text-muted-foreground">Auto-reporting to FIU</span>
+                          </div>
+                        </div>
+                        
+                        <div className="pt-2 border-t">
+                          <div className="flex justify-between text-sm">
+                            <span className="text-muted-foreground">Regulatory Status:</span>
+                            <span className="font-mono text-accent">Approved</span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
                   
                   <div className="bg-destructive/20 border border-destructive/30 rounded-md p-3">
                     <div className="flex items-center space-x-2">
