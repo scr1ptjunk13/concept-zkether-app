@@ -13,7 +13,7 @@ import { mockData } from "@/lib/queryClient";
 export default function Home() {
   const [showDeposit, setShowDeposit] = useState(false);
   const [showWithdraw, setShowWithdraw] = useState(false);
-  const { walletAddress, walletBalance, walletType, resetOnboarding } = useOnboarding();
+  const { walletAddress, walletBalance, walletType, isKYCCompleted, resetOnboarding } = useOnboarding();
 
   const balance = mockData.balance;
   const privacyMetrics = mockData.privacyMetrics;
@@ -50,6 +50,11 @@ export default function Home() {
             <div className="flex items-center space-x-2 breathing-dots">
               <DotMatrix pattern="header" />
               <h1 className="text-2xl font-mono font-bold tracking-wider">zkETHer</h1>
+              {isKYCCompleted && (
+                <span className="text-xs bg-accent/20 text-accent px-2 py-1 rounded-full font-mono border border-accent/30">
+                  🇮🇳 India Ready
+                </span>
+              )}
               <DotMatrix pattern="header" />
             </div>
             <Button 

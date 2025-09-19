@@ -1,4 +1,5 @@
 import DotMatrix from "./dot-matrix";
+import { useOnboarding } from "@/contexts/onboarding-context";
 
 interface PrivacyMeterProps {
   anonymitySetSize: number;
@@ -9,6 +10,8 @@ export default function PrivacyMeter({
   anonymitySetSize, 
   unlinkabilityScore 
 }: PrivacyMeterProps) {
+  const { isKYCCompleted, kycData } = useOnboarding();
+
   const getPrivacyLevel = () => {
     if (anonymitySetSize === 0) return "None";
     if (anonymitySetSize < 100) return "Low";
@@ -60,6 +63,20 @@ export default function PrivacyMeter({
           </span>
         </span>
       </div>
+      
+      {/* Compliance Status */}
+      {isKYCCompleted && (
+        <div className="mt-3 pt-3 border-t border-border">
+          <div className="text-xs text-muted-foreground mb-2">
+            <span className="text-accent font-mono" data-testid="text-compliance-status">
+              Compliance Status: ✓ India Verified
+            </span>
+          </div>
+          <div className="text-xs text-muted-foreground font-mono" data-testid="text-tds-rate">
+            TDS Rate: 1% (Auto-deducted)
+          </div>
+        </div>
+      )}
     </div>
   );
 }
