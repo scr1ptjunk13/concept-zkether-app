@@ -18,10 +18,10 @@ function Router() {
 }
 
 function AppContent() {
-  const { isWalletConnected, isZkKeysGenerated } = useOnboarding();
+  const { isWalletConnected, isKYCCompleted, isZkKeysGenerated } = useOnboarding();
   
-  // Show onboarding if wallet not connected or zk keys not generated
-  if (!isWalletConnected || !isZkKeysGenerated) {
+  // Show onboarding if wallet not connected, KYC not completed, or zk keys not generated
+  if (!isWalletConnected || !isKYCCompleted || !isZkKeysGenerated) {
     return <OnboardingFlow onComplete={() => {}} />;
   }
   

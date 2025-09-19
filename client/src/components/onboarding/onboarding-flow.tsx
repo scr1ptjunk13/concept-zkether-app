@@ -2,9 +2,10 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import WelcomeScreen from "./welcome-screen";
 import WalletConnectionScreen from "./wallet-connection-screen";
+import KYCVerificationScreen from "./kyc-verification-screen";
 import KeyGenerationScreen from "./key-generation-screen";
 
-type OnboardingStep = "welcome" | "wallet" | "keys";
+type OnboardingStep = "welcome" | "wallet" | "kyc" | "keys";
 
 interface OnboardingFlowProps {
   onComplete: () => void;
@@ -18,6 +19,10 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   };
 
   const handleWalletConnected = () => {
+    setStep("kyc");
+  };
+
+  const handleKYCCompleted = () => {
     setStep("keys");
   };
 
@@ -33,8 +38,10 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   const handleBack = () => {
     if (step === "wallet") {
       setStep("welcome");
-    } else if (step === "keys") {
+    } else if (step === "kyc") {
       setStep("wallet");
+    } else if (step === "keys") {
+      setStep("kyc");
     }
   };
 
@@ -67,6 +74,21 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
             <WalletConnectionScreen 
               onBack={handleBack}
               onConnected={handleWalletConnected}
+            />
+          </motion.div>
+        )}
+
+        {step === "kyc" && (
+          <motion.div
+            key="kyc"
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -100 }}
+            transition={{ duration: 0.3 }}
+          >
+            <KYCVerificationScreen 
+              onBack={handleBack}
+              onComplete={handleKYCCompleted}
             />
           </motion.div>
         )}
