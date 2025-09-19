@@ -2,17 +2,19 @@ import BalanceCard from "@/components/balance-card";
 import PrivacyMeter from "@/components/privacy-meter";
 import DepositFlow from "@/components/deposit-flow";
 import WithdrawFlow from "@/components/withdraw-flow";
+import ComplianceDashboard from "@/components/compliance-dashboard";
 import ActivityFeed from "@/components/activity-feed";
 import DotMatrix from "@/components/dot-matrix";
 import { useOnboarding } from "@/contexts/onboarding-context";
 import { Button } from "@/components/ui/button";
-import { Settings } from "lucide-react";
+import { Settings, Shield } from "lucide-react";
 import { useState } from "react";
 import { mockData } from "@/lib/queryClient";
 
 export default function Home() {
   const [showDeposit, setShowDeposit] = useState(false);
   const [showWithdraw, setShowWithdraw] = useState(false);
+  const [showCompliance, setShowCompliance] = useState(false);
   const { walletAddress, walletBalance, walletType, isKYCCompleted, resetOnboarding } = useOnboarding();
 
   const balance = mockData.balance;
@@ -57,14 +59,26 @@ export default function Home() {
               )}
               <DotMatrix pattern="header" />
             </div>
-            <Button 
-              variant="ghost" 
-              size="sm"
-              onClick={resetOnboarding}
-              data-testid="button-reset-onboarding"
-            >
-              <Settings className="w-4 h-4" />
-            </Button>
+            <div className="flex items-center space-x-2">
+              {isKYCCompleted && (
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => setShowCompliance(true)}
+                  data-testid="button-compliance"
+                >
+                  <Shield className="w-4 h-4" />
+                </Button>
+              )}
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={resetOnboarding}
+                data-testid="button-reset-onboarding"
+              >
+                <Settings className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
           
           {/* Connected Wallet Info */}
@@ -138,6 +152,12 @@ export default function Home() {
       {showWithdraw && (
         <WithdrawFlow 
           onClose={() => setShowWithdraw(false)} 
+        />
+      )}
+      
+      {showCompliance && (
+        <ComplianceDashboard 
+          onClose={() => setShowCompliance(false)} 
         />
       )}
     </div>

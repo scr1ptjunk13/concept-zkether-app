@@ -27,7 +27,15 @@ export default function DepositFlow({ onClose }: DepositFlowProps) {
   const [nonce, setNonce] = useState("");
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { walletType, walletAddress, walletBalance } = useOnboarding();
+  const { walletType, walletAddress, walletBalance, isKYCCompleted } = useOnboarding();
+
+  // Tax and fee calculations
+  const depositAmount = 1.0;
+  const gasFee = 0.003;
+  const tdsRate = 0.01; // 1%
+  const tdsAmount = depositAmount * tdsRate;
+  const netAmount = depositAmount - tdsAmount;
+  const totalCost = depositAmount + gasFee + tdsAmount;
 
   const depositMutation = useMutation({
     mutationFn: async (data: { recipient: string; amount: number; commitment: string }) => {
@@ -265,11 +273,23 @@ export default function DepositFlow({ onClose }: DepositFlowProps) {
                       <div className="space-y-1 text-sm">
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">Gas Fee:</span>
-                          <span className="font-mono">~0.003 ETH</span>
+                          <span className="font-mono">~{gasFee.toFixed(3)} ETH</span>
                         </div>
+                        {isKYCCompleted && (
+                          <>
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">TDS (1%):</span>
+                              <span className="font-mono">{tdsAmount.toFixed(2)} ETH</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">Net Amount:</span>
+                              <span className="font-mono">{netAmount.toFixed(2)} ETH</span>
+                            </div>
+                          </>
+                        )}
                         <div className="flex justify-between font-medium">
                           <span>Total Cost:</span>
-                          <span className="font-mono">1.003 ETH</span>
+                          <span className="font-mono">{(isKYCCompleted ? totalCost : depositAmount + gasFee).toFixed(3)} ETH</span>
                         </div>
                       </div>
                       
@@ -281,6 +301,17 @@ export default function DepositFlow({ onClose }: DepositFlowProps) {
                           <p>✓ Unlinkable when withdrawn</p>
                         </div>
                       </div>
+                      
+                      {isKYCCompleted && (
+                        <div className="pt-2 border-t">
+                          <div className="text-xs space-y-1">
+                            <p className="font-medium">Compliance Features:</p>
+                            <p>✓ KYC Verified User</p>
+                            <p>✓ AML Screening Passed</p>
+                            <p>✓ Auto Tax Reporting</p>
+                          </div>
+                        </div>
+                      )}
                       
                       <div className="pt-2 border-t">
                         <div className="text-xs space-y-1">
